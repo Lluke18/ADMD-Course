@@ -1,4 +1,11 @@
+import 'package:admd/models/magazine.dart';
 import 'package:flutter/material.dart';
+import 'models/user.dart';
+import 'models/bank_account.dart';
+import 'models/library.dart';
+import 'models/book.dart';
+import 'models/magazine.dart';
+import 'models/library_item.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,116 +14,127 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Lab 2',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const UsersPage(title: 'L2'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class UsersPage extends StatelessWidget {
+  const UsersPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    
+    final List<User> users = [
+      User(
+        name: 'Ana Mere',
+        age: 21,
+        email: 'ana@gmail.com',
+      ),
+      User(
+        name: 'Bob Ragnarson',
+        age: null, 
+        email: 'bob@yahoo.com',
+      ),
+      User(
+        name: 'Ion Ion',
+        age: null, 
+        email: null,
+      ),
+    ];
+
+    final acc1 = BankAccount(
+      holderName: 'Mihai VIteazu',
+      balance: 1500.0,
+      bankBranch: 'Raiffeisen',
+    );
+    acc1.initializeAccount('RO123');
+
+    
+    final acc2 = BankAccount(
+      holderName: 'Stefan cel mare',
+      balance: 300.0,
+    );
+    acc2.initializeAccount('MD321');
+
+    
+    final acc3 = BankAccount(
+      holderName: 'Vlad Tepes',
+      balance: 50.0,
+      bankBranch: 'BCR',
+    );
+    
+
+    final List<BankAccount> accounts = [acc1, acc2, acc3];
+
+    List<LibraryItem> items = [
+      Book(title: 'Hamlet', author: 'Will. Shakesword', publishDate: DateTime(1000, 1, 1), pageCount: 200, isbn: '2'),
+      Magazine(title: 'Aurora', publisher: 'NatGeo', issueNumber: 5, publishDate: DateTime(2023, 5, 1)),
+    ];
+    final library = Library(items: items);
+    library.addItem(Book(title: 'Iona', author: 'Marin Sorescu', publishDate: DateTime(1925, 4, 10), pageCount: 180, isbn: '1', borrower: users[0], dueDate: DateTime(2024, 6, 1)));
+    library.returnItem(items[2]);
+    
+
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body: ListView(
+        children: [
+          // Users Section Header
+          const Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Text('Users', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          ...users.map((user) => ListTile(
+                title: Text(user.name),
+                subtitle: Text('Age: ${user.getDisplayAge()} | Email: ${user.email ?? 'Not provided'}'),
+              )),
+
+          const Divider(),
+
+          
+          const Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Text('Bank Accounts', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          ...accounts.map((a) => ListTile(
+                title: Text(a.holderName),
+                subtitle: Text(
+                  !a.checkInit()
+                      ? 'Uninit'
+                      : (a.bankBranch ?? 'Not provided'),
+                ),
+              )),
+
+          const Divider(),
+
+          
+          const Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Text('Library Items', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          ...library.items.map((item) => ListTile(
+                title: Text(item.title),
+                subtitle: Text('Author: ${item.author ?? 'Not provided'}'),
+              )),
+        ],
       ),
     );
   }
 }
+
+
+
+
