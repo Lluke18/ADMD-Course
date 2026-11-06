@@ -4,8 +4,8 @@ import 'models/user.dart';
 import 'models/bank_account.dart';
 import 'models/library.dart';
 import 'models/book.dart';
-import 'models/magazine.dart';
 import 'models/library_item.dart';
+import 'screens/todo_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -89,9 +89,18 @@ class UsersPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
+        actions: [
+          IconButton(onPressed: () {
+            Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const TodoPage()),
+                  );
+                  } ,
+           icon: const Icon(Icons.checklist))
+        ],
       ),
       body: ListView(
         children: [
+
           // Users Section Header
           const Padding(
             padding: EdgeInsets.all(12.0),
